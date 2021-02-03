@@ -4,7 +4,7 @@
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border-radius: 10px;
-  height: 75vh;
+  min-height: 75vh;
   width: 75vw;
   margin: 50px auto;
   padding: 15px 70px;
