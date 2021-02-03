@@ -6,7 +6,7 @@ const main = () => {
   return (
     <div className={classes.Main}>
       <Navigation />
-        <Shop/>
+      <Shop />
     </div>
   );
 };
