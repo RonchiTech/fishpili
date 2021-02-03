@@ -6,9 +6,9 @@ const card = ({ img, price, name }) => {
     <Link to={{
       pathname: `/product/${name}`,
       search: `?price=${price}`
-    }}>
+    }} key={name + img + price}>
       <div className={classes.Card}>
-        <img src={img} alt="Fish" />
+        <img src={img} alt={name} />
         <div className={classes.FishInfo}>
           <h2>{name}</h2>
           <p style={{ fontSize: '1rem' }}>{price}</p>

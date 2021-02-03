@@ -9,7 +9,6 @@ const main = () => {
     <div className={classes.Main}>
       <Navigation />
       <Switch>
-       
         <Route path='/product/:id' component={Product} />
         <Route path='/' component={Shop} />
       </Switch>

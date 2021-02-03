@@ -5,6 +5,7 @@ const product = (props) => {
   return (
     <h1>
       This is {match.params.id}
+      {/* <img src={location.search} alt={match.params.id} /> */}
       {console.log(props)}
     </h1>
   );
