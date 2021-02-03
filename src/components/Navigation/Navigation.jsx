@@ -7,7 +7,7 @@ const navigation = () => {
                 <li>Fish Pili</li>
             </ul>
             <ul className={classes.NavUser}>
-                <li>Checkout</li>
+                <li>Cart</li>
                 <li>Login</li>
             </ul>
         </nav>
