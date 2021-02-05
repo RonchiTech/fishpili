@@ -3,7 +3,7 @@ import classes from './Card.module.css';
 import { Link } from 'react-router-dom';
 const card = ({ img, price, name }) => {
   return (
-    <Link to={{
+    <Link style={{textDecoration: 'none', color: 'black'}}to={{
       pathname: `/product/${name}`,
       search: `?price=${price}`
     }} key={name + img + price}>

@@ -1,0 +1,20 @@
+.Dashboard {
+  background: rgba(245, 245, 245, 0.041);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 10px;
+  min-height: 75vh;
+  width: 75vw;
+  margin: 50px auto;
+  padding: 15px 70px;
+  display: flex;
+}
+.MenuContainer {
+    width: 25%;
+    border: 2px solid black;
+}
+.InfoContainer {
+    width: 70%;
+       border: 2px solid rgb(168, 63, 63);
+}

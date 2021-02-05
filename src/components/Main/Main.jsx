@@ -2,6 +2,7 @@ import React from 'react';
 import classes from './Main.module.css';
 import Navigation from '../Navigation/Navigation';
 import Shop from '../Shop/Shop';
+
 import Product from '../Product/Product'
 import { Route, Switch } from 'react-router-dom'
 const main = () => {
@@ -12,6 +13,7 @@ const main = () => {
         <Route path='/product/:id' component={Product} />
         <Route path='/' component={Shop} />
       </Switch>
+    
     </div>
   );
 };

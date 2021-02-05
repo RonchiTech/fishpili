@@ -1,0 +1,8 @@
+.MenuContainer {
+ text-align: center;
+}
+.MenuContainer li{
+    list-style: none;
+    margin: 15px 0;
+    font-weight: 500;
+}
