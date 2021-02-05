@@ -1,12 +1,21 @@
 .MenuContainer {
   text-align: center;
+  width: 100%;
 }
-.MenuContainer li{
+.MenuContainer li {
   list-style: none;
-  padding: 5px 0;
   font-weight: 500;
-  width: 50%;
+  width: 60%;
   margin: 5px auto;
+}
+.MenuContainer a {
+  display: block;
+  color: #000;
+  text-decoration: none;
+   padding: 5px;
+}
+.MenuContainer a.Active {
+  color: white;
+  background-color: black;
   border-radius: 15px;
- 
 }
