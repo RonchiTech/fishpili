@@ -7,14 +7,17 @@
   min-height: 75vh;
   width: 75vw;
   margin: 50px auto;
-  padding: 15px 70px;
   display: flex;
+  border: 2px solid gray;
+   border-radius: 25px;
 }
 .MenuContainer {
-    width: 25%;
-    border: 2px solid black;
+  background-color: #fff;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  width: 20%;
+  border-right: 2px solid rgb(133, 119, 119);
 }
 .InfoContainer {
-    width: 70%;
-       border: 2px solid rgb(168, 63, 63);
+  width: 70%;
 }
