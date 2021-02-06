@@ -8,7 +8,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 const App = () => {
   return (
     <Router>
-      {/* <Supplier />; */}
+      <Route path="/" exact component={Main} />
+     
+      {/* <Supplier /> */}
       <Route path="/login" component={Login} />
     </Router>
   );
