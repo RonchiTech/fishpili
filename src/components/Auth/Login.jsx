@@ -10,7 +10,7 @@ import 'firebase/analytics';
 // Add the Firebase products that you want to use
 import 'firebase/auth';
 import 'firebase/firestore';
-
+import './Login.css'
 const firebaseConfig = {
   apiKey: 'AIzaSyAL7xMki5C3hK7gOE_QIbBm3eguWLQD3Hg',
   authDomain: 'fishpili.firebaseapp.com',
@@ -75,13 +75,9 @@ const Login = () => {
       <button onClick={logout}>Log out</button>
     </>
   ) : (
-    <div>
-      <button onClick={signInWithGoogle}>
-        <img
-          src="https://img.icons8.com/ios-filled/50/000000/google-logo.png"
-          alt="google icon"
-        />
-        <span> Continue with Google</span>
+    <div style={{ width: '20%', margin: '40vh auto' }}>
+      <button className="google btn" onClick={signInWithGoogle}>
+        Login with Google
       </button>
     </div>
   );
