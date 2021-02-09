@@ -8,10 +8,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 const App = () => {
   return (
     <Router>
-      <Route path="/" exact component={Main} />
-     
+      <Main/>
       {/* <Supplier /> */}
-      <Route path="/login" component={Login} />
     </Router>
   );
 };

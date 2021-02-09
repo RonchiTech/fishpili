@@ -19,13 +19,11 @@ input:hover,
 
 /* add appropriate colors to fb, twitter and google buttons */
 
-
 .google {
   background-color: #dd4b39;
   color: white;
 }
 
-
-
-
-
+.login_message {
+  text-align: center;
+}

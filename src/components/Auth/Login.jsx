@@ -54,6 +54,7 @@ const Login = () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       setUserName(user.displayName);
+      console.log(user);
     } else {
     }
   });
@@ -75,7 +76,8 @@ const Login = () => {
       <button onClick={logout}>Log out</button>
     </>
   ) : (
-    <div style={{ width: '20%', margin: '40vh auto' }}>
+    <div style={{ width: '20%', margin: '20vh auto' }}>
+      <h2 className='login_message'>Hi, please log in</h2>
       <button className="google btn" onClick={signInWithGoogle}>
         Login with Google
       </button>
