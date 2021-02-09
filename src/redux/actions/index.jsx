@@ -1,1 +1,1 @@
-export { authSuccess } from './authActions'
+export { authSuccess, authInit } from './authActions'

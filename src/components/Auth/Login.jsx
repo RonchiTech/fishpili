@@ -24,12 +24,12 @@ const firebaseConfig = {
   measurementId: 'G-2ZVJ06MR6R',
 };
 
-const Login = ({ onAuth, userData }) => {
+const Login = ({ onAuth, usrName, onauthInit }) => {
   const [userName, setUserName] = useState('');
 
-  useEffect(()=> {
-    onAuth(userName);
-  },[userName]);
+  useEffect(() => {
+    onauthInit(userName);
+  }, [onauthInit, userName]);
   var provider = new firebase.auth.GoogleAuthProvider();
   const signInWithGoogle = () => {
     firebase
@@ -49,8 +49,7 @@ const Login = ({ onAuth, userData }) => {
           token,
           user,
         };
-        onAuth(data);
-  
+        // onAuth(data);
       })
       .catch((error) => {
         // Handle Errors here.
@@ -61,6 +60,12 @@ const Login = ({ onAuth, userData }) => {
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
         // ...
+        const errors = {
+          errorCode,
+          errorMessage,
+          errorEmail: email,
+          errorCredential: credential,
+        };
       });
   };
 
@@ -69,8 +74,8 @@ const Login = ({ onAuth, userData }) => {
       const data = {
         displayName: user.displayName,
         imgUrl: user.photoURL,
-        uid: user.uid
-      }
+        uid: user.uid,
+      };
       setUserName(user.displayName);
     } else {
     }
@@ -82,6 +87,7 @@ const Login = ({ onAuth, userData }) => {
       .then(() => {
         // Sign-out successful.
         setUserName('');
+        localStorage.clear();
       })
       .catch((error) => {
         // An error happened.
@@ -91,7 +97,7 @@ const Login = ({ onAuth, userData }) => {
     <>
       <h2>{userName}</h2>
       <button onClick={logout}>Log out</button>
-      {console.log(userData)}
+      {console.log(usrName)}
     </>
   ) : (
     <div style={{ width: '20%', margin: '20vh auto' }}>
@@ -108,12 +114,12 @@ const Login = ({ onAuth, userData }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (data) => dispatch(action.authSuccess(data)),
+    onauthInit: (data) => dispatch(action.authInit(data)),
   };
 }
 const mapStateToProps = (state) => {
   return {
-    userData: state
+    usrName: state.userName
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

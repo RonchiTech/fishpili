@@ -1,9 +1,10 @@
 import React from 'react';
 import classes from './Navigation.module.css';
-import { NavLink, Redirect, useHistory } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-const Navigation = ({ userName }) => {
-  const history = useHistory();
+import * as action from '../../redux/actions/index'
+const Navigation = ({ userName,onAuth }) => {
+  
   const style = {
     color: '#100B00',
     font: '1.2rem',
@@ -39,4 +40,5 @@ const mapStateToProps = (state) => {
     userName: state.userName,
   };
 };
+
 export default connect(mapStateToProps)(Navigation);
