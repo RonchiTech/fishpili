@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from 'firebase/app';
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
@@ -11,6 +11,9 @@ import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
 import './Login.css'
+
+import {connect} from 'react-redux'
+import * as action from '../../redux/actions/index'
 const firebaseConfig = {
   apiKey: 'AIzaSyAL7xMki5C3hK7gOE_QIbBm3eguWLQD3Hg',
   authDomain: 'fishpili.firebaseapp.com',
@@ -21,8 +24,12 @@ const firebaseConfig = {
   measurementId: 'G-2ZVJ06MR6R',
 };
 
-const Login = () => {
+const Login = ({ onAuth, userData }) => {
   const [userName, setUserName] = useState('');
+
+  useEffect(()=> {
+    onAuth(userName);
+  },[userName]);
   var provider = new firebase.auth.GoogleAuthProvider();
   const signInWithGoogle = () => {
     firebase
@@ -38,6 +45,12 @@ const Login = () => {
         var user = result.user;
 
         // ...
+        const data = {
+          token,
+          user,
+        };
+        onAuth(data);
+  
       })
       .catch((error) => {
         // Handle Errors here.
@@ -53,8 +66,12 @@ const Login = () => {
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
+      const data = {
+        displayName: user.displayName,
+        imgUrl: user.photoURL,
+        uid: user.uid
+      }
       setUserName(user.displayName);
-      console.log(user);
     } else {
     }
   });
@@ -74,10 +91,11 @@ const Login = () => {
     <>
       <h2>{userName}</h2>
       <button onClick={logout}>Log out</button>
+      {console.log(userData)}
     </>
   ) : (
     <div style={{ width: '20%', margin: '20vh auto' }}>
-      <h2 className='login_message'>Hi, please log in</h2>
+      <h2 className="login_message">Hi, please log in</h2>
       <button className="google btn" onClick={signInWithGoogle}>
         Login with Google
       </button>
@@ -86,5 +104,17 @@ const Login = () => {
 
   return display;
 };
-export default Login;
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAuth: (data) => dispatch(action.authSuccess(data)),
+  };
+}
+const mapStateToProps = (state) => {
+  return {
+    userData: state
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 firebase.initializeApp(firebaseConfig);

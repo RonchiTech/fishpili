@@ -1,7 +1,9 @@
 import React from 'react';
 import classes from './Navigation.module.css';
-import { NavLink } from 'react-router-dom';
-const navigation = () => {
+import { NavLink, Redirect, useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+const Navigation = ({ userName }) => {
+  const history = useHistory();
   const style = {
     color: '#100B00',
     font: '1.2rem',
@@ -12,6 +14,7 @@ const navigation = () => {
     color: '#88665D',
     backGround: 'white',
   };
+
   return (
     <nav className={classes.Navigation}>
       <ul className={classes.Logo}>
@@ -24,11 +27,16 @@ const navigation = () => {
           <li>Cart</li>
         </NavLink>
         <NavLink style={style} activeStyle={activeStyle} to="/login">
-          <li>Login</li>
+          <li> {userName ? userName : 'Login'}</li>
         </NavLink>
       </ul>
     </nav>
   );
 };
 
-export default navigation;
+const mapStateToProps = (state) => {
+  return {
+    userName: state.userName,
+  };
+};
+export default connect(mapStateToProps)(Navigation);
