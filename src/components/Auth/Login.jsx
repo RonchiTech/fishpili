@@ -14,6 +14,9 @@ import './Login.css'
 
 import {connect} from 'react-redux'
 import * as action from '../../redux/actions/index'
+
+import axios from 'axios'
+
 const firebaseConfig = {
   apiKey: 'AIzaSyAL7xMki5C3hK7gOE_QIbBm3eguWLQD3Hg',
   authDomain: 'fishpili.firebaseapp.com',
@@ -45,10 +48,7 @@ const Login = ({ onAuth, usrName, onauthInit }) => {
         var user = result.user;
 
         // ...
-        const data = {
-          token,
-          user,
-        };
+      
         // onAuth(data);
       })
       .catch((error) => {
@@ -76,6 +76,13 @@ const Login = ({ onAuth, usrName, onauthInit }) => {
         imgUrl: user.photoURL,
         uid: user.uid,
       };
+      axios.post(`https://fishpili-default-rtdb.firebaseio.com/users/${user.uid}.json`, data)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
       setUserName(user.displayName);
     } else {
     }
