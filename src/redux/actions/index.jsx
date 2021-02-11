@@ -1,1 +1,7 @@
-export { authSuccess, authInit, authLogout, checkAuth } from './authActions';
+export {
+  authSuccess,
+  authInit,
+  authLogout,
+  checkAuth,
+  setRoles,
+} from './authActions';

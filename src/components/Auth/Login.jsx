@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from 'firebase/app';
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
@@ -28,9 +28,6 @@ const firebaseConfig = {
 };
 
 const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
-  
- 
-  
   const signInWithGoogle = useCallback(() => {
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase
@@ -129,7 +126,10 @@ const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
   // }
   let display = usrname ? (
     <>
-      <h2>{usrname}</h2>
+      <h2>
+        {usrname}
+        <span style={{fontSize:'.9rem',color: 'red'}}>  {usrRole}</span>
+      </h2>
       <button onClick={logout}>Log out</button>
     </>
   ) : (

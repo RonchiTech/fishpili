@@ -24,6 +24,11 @@ const reducer = (state = initialState, action) => {
         username: action.username,
         userID: action.userID,
       };
+      case actionType.SET_ROLES:
+        return {
+          ...state,
+          userRole: action.userRole,
+        };
     default:
       return state;
   }

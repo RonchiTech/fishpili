@@ -29,3 +29,10 @@ export const checkAuth = () => {
     userID,
   };
 };
+
+export const setRoles = (userRole) => {
+  return {
+    type: actionType.SET_ROLES,
+    userRole,
+  };
+};
