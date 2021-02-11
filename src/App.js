@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import './App.css';
 import Main from './components/Main/Main';
 import Supplier from './components/Supplier/Supplier';

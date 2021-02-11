@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from 'firebase/app';
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
@@ -27,14 +27,12 @@ const firebaseConfig = {
   measurementId: 'G-2ZVJ06MR6R',
 };
 
-const Login = ({ usrname, onauthInit, onLogOut }) => {
-  const [userName, setUserName] = useState('');
-
-  // useEffect(() => {
-  //   onauthInit(userName);
-  // }, [onauthInit, userName]);
-  var provider = new firebase.auth.GoogleAuthProvider();
-  const signInWithGoogle = () => {
+const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
+  
+ 
+  
+  const signInWithGoogle = useCallback(() => {
+    var provider = new firebase.auth.GoogleAuthProvider();
     firebase
       .auth()
       .signInWithPopup(provider)
@@ -48,6 +46,7 @@ const Login = ({ usrname, onauthInit, onLogOut }) => {
         var user = result.user;
         console.log(user);
         // ...
+
         localStorage.setItem('username', user.displayName);
         localStorage.setItem('uid', user.uid);
         onauthInit();
@@ -69,7 +68,7 @@ const Login = ({ usrname, onauthInit, onLogOut }) => {
         //   errorCredential: credential,
         // };
       });
-  };
+  }, [onauthInit]);
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -78,13 +77,6 @@ const Login = ({ usrname, onauthInit, onLogOut }) => {
       //   imgUrl: user.photoURL,
       //   uid: user.uid,
       // };
-      // axios.get(
-      //   `https://fishpili-default-rtdb.firebaseio.com/users/${user.uid}.json`
-      // ).then(response=>{
-      //   console.log(response);
-      // }).catch(err=>{
-      //   console.log(err);
-      // });
       // axios.post(`https://fishpili-default-rtdb.firebaseio.com/users/${user.uid}.json`, data)
       // .then(response => {
       //   console.log(response);
@@ -92,7 +84,6 @@ const Login = ({ usrname, onauthInit, onLogOut }) => {
       // .catch(error => {
       //   console.log(error);
       // });
-      setUserName(user.displayName);
     } else {
     }
   });
@@ -102,7 +93,6 @@ const Login = ({ usrname, onauthInit, onLogOut }) => {
       .signOut()
       .then(() => {
         // Sign-out successful.
-        setUserName('');
         localStorage.clear();
         onLogOut();
       })
@@ -110,9 +100,36 @@ const Login = ({ usrname, onauthInit, onLogOut }) => {
         // An error happened.
       });
   };
-  let display = userName ? (
+  // if(usrname){
+  //      axios
+  //        .get(
+  //          `https://fishpili-default-rtdb.firebaseio.com/users/${usrID}/${usrname}.json`
+  //        )
+  //        .then((response) => {
+  //          console.log(response);
+  //          if (response.data === null) {
+  //            axios
+  //              .post(
+  //                `https://fishpili-default-rtdb.firebaseio.com/users/${usrID}/${usrname}.json`,
+  //                {
+  //                  usrRole: 'isVendor',
+  //                }
+  //              )
+  //              .then((res) => {
+  //                console.log(res);
+  //              })
+  //              .catch((err) => {
+  //                console.err(err);
+  //              });
+  //          }
+  //        })
+  //        .catch((error) => {
+  //          console.log(error);
+  //        });
+  // }
+  let display = usrname ? (
     <>
-      <h2>{userName}</h2>
+      <h2>{usrname}</h2>
       <button onClick={logout}>Log out</button>
     </>
   ) : (
@@ -130,13 +147,15 @@ const Login = ({ usrname, onauthInit, onLogOut }) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onauthInit: () => dispatch(action.authInit()),
-    onLogOut: () => dispatch(action.authLogout())
+    onLogOut: () => dispatch(action.authLogout()),
   };
 };
 const mapStateToProps = (state) => {
   return {
     usrname: state.username,
+    usrID: state.userID,
+    usrRole: state.userRole,
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default React.memo(connect(mapStateToProps, mapDispatchToProps)(Login));
 firebase.initializeApp(firebaseConfig);

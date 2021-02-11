@@ -6,9 +6,11 @@ export const authInit = () => {
 };
 export const authSuccess = () => {
   const username = localStorage.getItem('username');
+  const userID = localStorage.getItem('uid');
   return {
     type: actionType.AUTH_SUCCESS,
     username,
+    userID
   };
 };
 export const authLogout = () => {
@@ -20,8 +22,10 @@ export const authLogout = () => {
 
 export const checkAuth = () => {
   const username = localStorage.getItem('username');
+  const userID = localStorage.getItem('uid');
   return {
     type: actionType.CHECK_AUTH,
     username,
+    userID,
   };
 };
