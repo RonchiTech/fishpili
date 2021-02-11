@@ -7,10 +7,10 @@ import Product from '../Product/Product';
 import { Route, Switch } from 'react-router-dom';
 import * as action from '../../redux/actions'
 import {connect} from 'react-redux'
-const Main = ({ onAuth }) => {
+const Main = ({ onCheckAuth }) => {
   useEffect(() => {
-    onAuth();
-  }, [onAuth]);
+    onCheckAuth();
+  });
   return (
     <div className={classes.Main}>
       <Navigation />
@@ -25,7 +25,7 @@ const Main = ({ onAuth }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: () => dispatch(action.authSuccess()),
+    onCheckAuth: () => dispatch(action.checkAuth()),
   };
 };
 export default connect(null, mapDispatchToProps)(Main);

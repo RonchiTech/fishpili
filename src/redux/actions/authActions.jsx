@@ -1,14 +1,27 @@
 import * as actionType from './actionTypes';
-export const authInit = (data) => {
+export const authInit = () => {
   return (dispatch) => {
-    localStorage.setItem('userName', data);
     dispatch(authSuccess());
   };
 };
 export const authSuccess = () => {
-  const userName = localStorage.getItem('userName');
+  const username = localStorage.getItem('username');
   return {
     type: actionType.AUTH_SUCCESS,
-    userName,
+    username,
+  };
+};
+export const authLogout = () => {
+  localStorage.clear();
+  return {
+    type: actionType.AUTH_LOGOUT,
+  };
+};
+
+export const checkAuth = () => {
+  const username = localStorage.getItem('username');
+  return {
+    type: actionType.CHECK_AUTH,
+    username,
   };
 };

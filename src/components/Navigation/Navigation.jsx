@@ -1,8 +1,8 @@
 import React from 'react';
 import classes from './Navigation.module.css';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as action from '../../redux/actions/index'
+
 const Navigation = ({ userName,onAuth }) => {
   
   const style = {
@@ -37,7 +37,7 @@ const Navigation = ({ userName,onAuth }) => {
 
 const mapStateToProps = (state) => {
   return {
-    userName: state.userName,
+    userName: state.username,
   };
 };
 
