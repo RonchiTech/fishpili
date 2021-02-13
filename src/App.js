@@ -2,24 +2,22 @@ import React from 'react';
 import './App.css';
 import Main from './components/Main/Main';
 import Supplier from './components/Supplier/Supplier';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider} from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux'
-import authReducer from './redux/reducers/authReducers'
-import thunk from 'redux-thunk'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(authReducer, composeEnhancers(applyMiddleware(thunk)));
-const App = () => {
-
-  return (
-    <Provider store={store}>
-      <Router>
-        <Main />
-        {/* <Supplier /> */}
-      </Router>
-    </Provider>
-  );
+const App = ({ userRole }) => {
+  ;
+  let route = <Route path="/" component={Main} />;
+  if (userRole && userRole == 'isVendor') {
+    route = <Route path="/" component={Supplier} />;
+  } else {
+    route = <Route path="/" component={Main} />
+  }
+  return <Router>{route}</Router>;
 };
-
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    userRole: state.userRole,
+  };
+};
+export default connect(mapStateToProps)(App);

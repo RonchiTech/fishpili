@@ -15,7 +15,6 @@ import './Login.css';
 import { connect } from 'react-redux';
 import * as action from '../../redux/actions/index';
 
-import axios from 'axios';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAL7xMki5C3hK7gOE_QIbBm3eguWLQD3Hg',
@@ -27,7 +26,7 @@ const firebaseConfig = {
   measurementId: 'G-2ZVJ06MR6R',
 };
 
-const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
+export const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
   const signInWithGoogle = useCallback(() => {
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase
@@ -84,7 +83,7 @@ const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
     } else {
     }
   });
-  const logout = () => {
+   const logout = () => {
     firebase
       .auth()
       .signOut()

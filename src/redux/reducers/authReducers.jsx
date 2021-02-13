@@ -17,6 +17,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         username: null,
         userID: null,
+        userRole: null,
       };
     case actionType.CHECK_AUTH:
       return {
