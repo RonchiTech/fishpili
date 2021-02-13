@@ -16,6 +16,7 @@ const Profile = ({ userRole, username, onLogOut }) => {
         // Sign-out successful.
         localStorage.clear();
         onLogOut();
+        history.push('/');
       })
       .catch((error) => {
         // An error happened.

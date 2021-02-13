@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import classes from './Main.module.css';
 import Navigation from '../Navigation/Navigation';
 import Shop from '../Shop/Shop';
@@ -11,44 +11,42 @@ import axios from 'axios';
 const Main = ({ onCheckAuth, username, userID, onSetRoles }) => {
   useEffect(() => {
     onCheckAuth();
-    checkRole();
-  });
-
-  const checkRole = useCallback(() => {
-    if (userID) {
-      axios
-        .get(
-          `https://fishpili-default-rtdb.firebaseio.com/users/${userID}.json`
-        )
-        .then((response) => {
-          // console.log(response.data);
-
-          // console.log(Object.keys(response.data).map((key) => response.data[key]));
-
-          if (response.data === null) {
-            axios
-              .post(
-                `https://fishpili-default-rtdb.firebaseio.com/users/${userID}.json`,
-                { username, usrRole: 'isVendor' }
-              )
-              .then((res) => {
-                console.log(res.data);
-              })
-              .catch((err) => {
-                console.err(err);
-              });
-          } else {
-            const role = Object.keys(response.data).map(
-              (key) => response.data[key].usrRole
-            );
-            onSetRoles(role);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [userID, username, onSetRoles]);
+     if (userID) {
+       axios
+         .get(
+           `https://fishpili-default-rtdb.firebaseio.com/users/${userID}.json`
+         )
+         .then((response) => {
+           // console.log(response.data);
+           // console.log(Object.keys(response.data).map((key) => response.data[key]));
+          // console.log(Object.values(response.data)[0].usrRole);
+           if (response.data === null) {
+             axios
+               .post(
+                 `https://fishpili-default-rtdb.firebaseio.com/users/${userID}.json`,
+                 { username, usrRole: 'isVendor' }
+               )
+               .then((res) => {
+                 axios.get(
+                   `https://fishpili-default-rtdb.firebaseio.com/users/${userID}.json`
+                 ).then(response => {
+                  const role = Object.values(response.data)[0].usrRole;
+                  onSetRoles(role);
+                 });
+               })
+               .catch((err) => {
+                 console.err(err);
+               });
+           } else {
+             const role = Object.values(response.data)[0].usrRole;
+             onSetRoles(role);
+           }
+         })
+         .catch((error) => {
+           console.log(error);
+         });
+     }
+  }, [onCheckAuth,onSetRoles,userID,username]);
 
   return (
     <div className={classes.Main}>

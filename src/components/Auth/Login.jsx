@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from 'firebase/app';
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
@@ -15,6 +16,7 @@ import './Login.css';
 import { connect } from 'react-redux';
 import * as action from '../../redux/actions/index';
 
+import axios from 'axios';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAL7xMki5C3hK7gOE_QIbBm3eguWLQD3Hg',
@@ -26,7 +28,8 @@ const firebaseConfig = {
   measurementId: 'G-2ZVJ06MR6R',
 };
 
-export const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
+const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
+  const history = useHistory();
   const signInWithGoogle = useCallback(() => {
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase
@@ -47,6 +50,8 @@ export const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
         localStorage.setItem('uid', user.uid);
         onauthInit();
         // onAuth(data);
+        history.push('/');
+
       })
       .catch((error) => {
         // Handle Errors here.
@@ -83,7 +88,7 @@ export const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
     } else {
     }
   });
-   const logout = () => {
+  const logout = () => {
     firebase
       .auth()
       .signOut()
