@@ -18,6 +18,7 @@ import * as action from '../../redux/actions/index';
 
 import axios from 'axios';
 
+
 const firebaseConfig = {
   apiKey: 'AIzaSyAL7xMki5C3hK7gOE_QIbBm3eguWLQD3Hg',
   authDomain: 'fishpili.firebaseapp.com',
@@ -28,7 +29,15 @@ const firebaseConfig = {
   measurementId: 'G-2ZVJ06MR6R',
 };
 
-const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
+const Login = ({
+  usrname,
+  onauthInit,
+  onLogOut,
+  usrRole,
+  usrID,
+  isLoading,
+  onSetRoles,
+}) => {
   const history = useHistory();
   const signInWithGoogle = useCallback(() => {
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -45,13 +54,50 @@ const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
         var user = result.user;
         console.log(user);
         // ...
-
+        const username = user.displayName;
         localStorage.setItem('username', user.displayName);
         localStorage.setItem('uid', user.uid);
         onauthInit();
+
+        if (user.uid) {
+          axios
+            .get(
+              `https://fishpili-default-rtdb.firebaseio.com/users/${user.uid}.json`
+            )
+            .then((response) => {
+              // console.log(response.data);
+              // console.log(Object.keys(response.data).map((key) => response.data[key]));
+              // console.log(Object.values(response.data)[0].usrRole);
+              if (response.data === null) {
+                axios
+                  .post(
+                    `https://fishpili-default-rtdb.firebaseio.com/users/${user.uid}.json`,
+                    { username, usrRole: 'isVendor' }
+                  )
+                  .then((res) => {
+                    axios
+                      .get(
+                        `https://fishpili-default-rtdb.firebaseio.com/users/${user.uid}.json`
+                      )
+                      .then((response) => {
+                        const role = Object.values(response.data)[0].usrRole;
+                        onSetRoles(role);
+                      });
+                  })
+                  .catch((err) => {
+                    console.err(err);
+                  });
+              } else {
+                const role = Object.values(response.data)[0].usrRole;
+                onSetRoles(role);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
         // onAuth(data);
         history.push('/');
-
       })
       .catch((error) => {
         // Handle Errors here.
@@ -69,7 +115,7 @@ const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
         //   errorCredential: credential,
         // };
       });
-  }, [onauthInit]);
+  }, [onauthInit,onSetRoles,history]);
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -132,7 +178,7 @@ const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
     <>
       <h2>
         {usrname}
-        <span style={{fontSize:'.9rem',color: 'red'}}>  {usrRole}</span>
+        <span style={{ fontSize: '.9rem', color: 'red' }}> {usrRole}</span>
       </h2>
       <button onClick={logout}>Log out</button>
     </>
@@ -144,7 +190,20 @@ const Login = ({ usrname, onauthInit, onLogOut, usrRole, usrID }) => {
       </button>
     </div>
   );
-
+  if (isLoading) {
+    display = (
+      <div className="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
   return display;
 };
 
@@ -152,6 +211,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onauthInit: () => dispatch(action.authInit()),
     onLogOut: () => dispatch(action.authLogout()),
+    onSetRoles: (role) => dispatch(action.setRoles(role))
   };
 };
 const mapStateToProps = (state) => {
@@ -159,6 +219,7 @@ const mapStateToProps = (state) => {
     usrname: state.username,
     usrID: state.userID,
     usrRole: state.userRole,
+    isLoading: state.isLoading
   };
 };
 export default React.memo(connect(mapStateToProps, mapDispatchToProps)(Login));

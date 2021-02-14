@@ -2,6 +2,6 @@ export {
   authSuccess,
   authInit,
   authLogout,
-  checkAuth,
+  checkAuthInit,
   setRoles,
 } from './authActions';

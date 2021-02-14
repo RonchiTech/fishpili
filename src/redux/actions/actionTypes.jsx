@@ -4,3 +4,4 @@ export const AUTH_FAILED = 'AUTH_FAILED;';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 export const CHECK_AUTH = 'CHECK_AUTH';
 export const SET_ROLES = 'SET_ROLES';
+export const IS_LOADING = 'IS_LOADING';

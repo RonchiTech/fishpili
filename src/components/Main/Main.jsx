@@ -7,62 +7,43 @@ import Product from '../Product/Product';
 import { Route, Switch } from 'react-router-dom';
 import * as action from '../../redux/actions';
 import { connect } from 'react-redux';
-import axios from 'axios';
-const Main = ({ onCheckAuth, username, userID, onSetRoles }) => {
+
+const Main = ({ onCheckAuth, username, userID, onSetRoles, isLoading }) => {
   useEffect(() => {
     onCheckAuth();
-     if (userID) {
-       axios
-         .get(
-           `https://fishpili-default-rtdb.firebaseio.com/users/${userID}.json`
-         )
-         .then((response) => {
-           // console.log(response.data);
-           // console.log(Object.keys(response.data).map((key) => response.data[key]));
-          // console.log(Object.values(response.data)[0].usrRole);
-           if (response.data === null) {
-             axios
-               .post(
-                 `https://fishpili-default-rtdb.firebaseio.com/users/${userID}.json`,
-                 { username, usrRole: 'isVendor' }
-               )
-               .then((res) => {
-                 axios.get(
-                   `https://fishpili-default-rtdb.firebaseio.com/users/${userID}.json`
-                 ).then(response => {
-                  const role = Object.values(response.data)[0].usrRole;
-                  onSetRoles(role);
-                 });
-               })
-               .catch((err) => {
-                 console.err(err);
-               });
-           } else {
-             const role = Object.values(response.data)[0].usrRole;
-             onSetRoles(role);
-           }
-         })
-         .catch((error) => {
-           console.log(error);
-         });
-     }
-  }, [onCheckAuth,onSetRoles,userID,username]);
+  }, [onCheckAuth]);
 
-  return (
-    <div className={classes.Main}>
+  let display = (
+    <>
       <Navigation />
       <Switch>
         <Route path="/product/:id" component={Product} />
         <Route path="/login" component={Login} />
         <Route path="/" component={Shop} />
       </Switch>
-    </div>
+    </>
   );
+  if (isLoading) {
+    display = (
+      <div className={classes.ldsroller}>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    );
+  }
+
+  return <div className={classes.Main}>{display}</div>;
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCheckAuth: () => dispatch(action.checkAuth()),
+    onCheckAuth: () => dispatch(action.checkAuthInit()),
     onSetRoles: (setRoles) => dispatch(action.setRoles(setRoles)),
   };
 };
@@ -70,6 +51,7 @@ const mapStateToProps = (state) => {
   return {
     userID: state.userID,
     username: state.username,
+    isLoading: state.isLoading,
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
