@@ -4,4 +4,5 @@ export {
   authLogout,
   checkAuthInit,
   setRoles,
+  checkAuthStart,
 } from './authActions';

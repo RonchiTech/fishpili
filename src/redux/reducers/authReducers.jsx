@@ -4,6 +4,7 @@ const initialState = {
   username: null,
   userID: null,
   userRole: null,
+  userPhotoURL: null,
   isLoading: false
 };
 const reducer = (state = initialState, action) => {
@@ -11,9 +12,12 @@ const reducer = (state = initialState, action) => {
     case actionType.AUTH_SUCCESS:
       return {
         ...state,
-        username: action.username,
+        username: action.userName,
         userID: action.userID,
-        isLoading: false
+        userRole: action.userRole,
+        userPhotoURL: action.userURL,
+        isLoading: false,
+      
       };
     case actionType.AUTH_LOGOUT:
       return {
@@ -21,15 +25,17 @@ const reducer = (state = initialState, action) => {
         username: null,
         userID: null,
         userRole: null,
+        userPhotoURL: null,
         isLoading: false,
       };
     case actionType.CHECK_AUTH:
       return {
         ...state,
-        username: action.username,
+        username: action.userName,
         userID: action.userID,
         userRole: action.userRole,
-        isLoading: false
+        userPhotoURL: action.userURL,
+        isLoading: false,
       };
       case actionType.SET_ROLES:
         return {

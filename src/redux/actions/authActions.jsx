@@ -29,10 +29,11 @@ export const authLogout = () => {
 //   });
 //   return {};
 // };
-export const checkAuthStart = (username, userID, userRole) => {
+export const checkAuthStart = (userID, userName, userURL, userRole) => {
   return {
     type: actionType.CHECK_AUTH,
-    username,
+    userName,
+    userURL,
     userID,
     userRole,
   };
@@ -40,6 +41,7 @@ export const checkAuthStart = (username, userID, userRole) => {
 export const checkAuthInit = () => {
   const username = localStorage.getItem('username');
   const userID = localStorage.getItem('uid');
+  const userURL = localStorage.getItem('photoURL');
   return (dispatch) => {
     if (userID) {
       dispatch(isLoading());
@@ -52,7 +54,7 @@ export const checkAuthInit = () => {
             axios
               .post(
                 `https://fishpili-default-rtdb.firebaseio.com/users/${userID}.json`,
-                { username, usrRole: 'isVendor' }
+                { username, usrRole: 'isVendor', photoURL: userURL }
               )
               .then((res) => {
                 dispatch(isLoading());
@@ -62,8 +64,8 @@ export const checkAuthInit = () => {
                   )
                   .then((response) => {
                     const role = Object.values(response.data)[0].usrRole;
-
-                    dispatch(checkAuthStart(username, userID, role));
+                    console.log('reducer', response);
+                    dispatch(checkAuthStart(userID, username, userURL, role));
                   });
               })
               .catch((err) => {
@@ -72,7 +74,7 @@ export const checkAuthInit = () => {
           } else {
             const role = Object.values(response.data)[0].usrRole;
             dispatch(isLoading());
-            dispatch(checkAuthStart(username, userID, role));
+            dispatch(checkAuthStart(userID, username, userURL, role));
           }
         })
         .catch((error) => {

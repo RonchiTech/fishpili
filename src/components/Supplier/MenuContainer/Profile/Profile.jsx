@@ -1,12 +1,11 @@
 import React from 'react';
 import classes from './Profile.module.css';
-import TempProfile from '../../../../assets/imgs/fish3.jpg';
 import {connect} from 'react-redux'
 
 import firebase from 'firebase/app';
 import * as action from '../../../../redux/actions';
 import { useHistory } from 'react-router-dom';
-const Profile = ({ userRole, username, onLogOut }) => {
+const Profile = ({ userRole, username, onLogOut, photoURL }) => {
   let history = useHistory();
   const logout = () => {
     firebase
@@ -21,15 +20,10 @@ const Profile = ({ userRole, username, onLogOut }) => {
       .catch((error) => {
         // An error happened.
       });
-      
   };
   return (
     <div className={classes.Profile}>
-      <img
-        className={classes.ProfileImage}
-        src={TempProfile}
-        alt="Profile"
-      ></img>
+      <img className={classes.ProfileImage} src={photoURL} alt="Profile"></img>
       <h2>{username}</h2>
       <button onClick={logout}>Logout</button>
     </div>
@@ -39,6 +33,7 @@ const mapStateToProps = (state) => {
   return {
     username: state.username,
     userRole: state.userRole,
+    photoURL: state.userPhotoURL
   };
 }
 const mapDispatchToProps = (dispatch) => {

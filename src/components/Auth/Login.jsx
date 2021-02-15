@@ -31,12 +31,13 @@ const firebaseConfig = {
 
 const Login = ({
   usrname,
-  onauthInit,
+
   onLogOut,
   usrRole,
   usrID,
   isLoading,
   onSetRoles,
+  onCheckAuthStart,
 }) => {
   const history = useHistory();
   const signInWithGoogle = useCallback(() => {
@@ -55,9 +56,11 @@ const Login = ({
         console.log(user);
         // ...
         const username = user.displayName;
+        const userPhotoURL = user.photoURL;
         localStorage.setItem('username', user.displayName);
         localStorage.setItem('uid', user.uid);
-        onauthInit();
+        localStorage.setItem('photoURL', user.photoURL);
+        // onauthInit();
 
         if (user.uid) {
           axios
@@ -72,7 +75,7 @@ const Login = ({
                 axios
                   .post(
                     `https://fishpili-default-rtdb.firebaseio.com/users/${user.uid}.json`,
-                    { username, usrRole: 'isVendor' }
+                    { username, usrRole: 'isVendor', userPhoto: userPhotoURL }
                   )
                   .then((res) => {
                     axios
@@ -80,8 +83,10 @@ const Login = ({
                         `https://fishpili-default-rtdb.firebaseio.com/users/${user.uid}.json`
                       )
                       .then((response) => {
+                        console.log('this is response: ', response);
                         const role = Object.values(response.data)[0].usrRole;
-                        onSetRoles(role);
+                        onCheckAuthStart(user.uid,user.displayName,user.photoURL,role);
+                        // onSetRoles(role);
                       });
                   })
                   .catch((err) => {
@@ -89,7 +94,20 @@ const Login = ({
                   });
               } else {
                 const role = Object.values(response.data)[0].usrRole;
-                onSetRoles(role);
+                // onSetRoles(role);
+                // onCheckAuthStart(
+                //   user.uid,
+                //   user.displayName,
+                //   user.photoURL,
+                //   role
+                // );
+                onCheckAuthStart(
+                  user.uid,
+                  user.displayName,
+                  user.photoURL,
+                  role
+                );
+                console.log('this is it',user);
               }
             })
             .catch((error) => {
@@ -115,7 +133,7 @@ const Login = ({
         //   errorCredential: credential,
         // };
       });
-  }, [onauthInit,onSetRoles,history]);
+  }, [history, onCheckAuthStart]);
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -209,9 +227,9 @@ const Login = ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onauthInit: () => dispatch(action.authInit()),
     onLogOut: () => dispatch(action.authLogout()),
-    onSetRoles: (role) => dispatch(action.setRoles(role))
+    onSetRoles: (role) => dispatch(action.setRoles(role)),
+    onCheckAuthStart: (id,name,url,role) => dispatch(action.checkAuthStart(id,name,url,role))
   };
 };
 const mapStateToProps = (state) => {
