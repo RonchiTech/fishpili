@@ -11,9 +11,11 @@ const Supplier = () => {
         <Menu />
       </div>
       <div className={classes.InfoContainer}>
-        <Route path="/" exact render={()=><p>Dashboard</p>} />
-        <Route path="/market" render={()=><p>market</p>} />
-        <Route path="/inventory" render={()=><p>inventory</p>} />
+        <Route path="/" exact render={() => <p>Dashboard</p>} />
+        <Route path="/market" render={() => <p>market</p>} />
+        <Route path="/inventory" render={() => <p>inventory</p>} />
+        <Route path="/profile" render={() => <p>profile</p>} />
+
       </div>
     </div>
   );

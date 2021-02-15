@@ -13,12 +13,17 @@ const MenuContainer = () => {
           </NavLink>
         </li>
         <li>
+          <NavLink activeClassName={classes.Active} to="/profile">
+            Profile{' '}
+          </NavLink>
+        </li>
+        <li>
           <NavLink activeClassName={classes.Active} to="/market">
             Market{' '}
           </NavLink>
         </li>
         <li>
-          <NavLink  activeClassName={classes.Active} to="/inventory">
+          <NavLink activeClassName={classes.Active} to="/inventory">
             Inventory
           </NavLink>
         </li>
