@@ -115,7 +115,7 @@ const Login = ({
             });
         }
         // onAuth(data);
-        history.push('/');
+        // history.push('/');
       })
       .catch((error) => {
         // Handle Errors here.
@@ -133,7 +133,7 @@ const Login = ({
         //   errorCredential: credential,
         // };
       });
-  }, [history, onCheckAuthStart]);
+  }, [onCheckAuthStart]);
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
