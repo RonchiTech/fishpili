@@ -48,6 +48,11 @@ const reducer = (state = initialState, action) => {
             ...state,
             isLoading: true
           }
+          case actionType.UPDATE_NAME_SUCCESS:
+            return {
+              ...state,
+              username: action.username
+            }
     default:
       return state;
   }

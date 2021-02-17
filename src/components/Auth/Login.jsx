@@ -18,7 +18,6 @@ import * as action from '../../redux/actions/index';
 
 import axios from 'axios';
 
-
 const firebaseConfig = {
   apiKey: 'AIzaSyAL7xMki5C3hK7gOE_QIbBm3eguWLQD3Hg',
   authDomain: 'fishpili.firebaseapp.com',
@@ -39,7 +38,6 @@ const Login = ({
   onSetRoles,
   onCheckAuthStart,
 }) => {
-
   const signInWithGoogle = useCallback(() => {
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase
@@ -55,7 +53,7 @@ const Login = ({
         var user = result.user;
         console.log(user);
         // ...
-        const username = user.displayName;
+        let username = user.displayName;
         const userPhotoURL = user.photoURL;
         localStorage.setItem('username', user.displayName);
         localStorage.setItem('uid', user.uid);
@@ -85,7 +83,12 @@ const Login = ({
                       .then((response) => {
                         console.log('this is response: ', response);
                         const role = Object.values(response.data)[0].usrRole;
-                        onCheckAuthStart(user.uid,user.displayName,user.photoURL,role);
+                        onCheckAuthStart(
+                          user.uid,
+                          user.displayName,
+                          user.photoURL,
+                          role
+                        );
                         // onSetRoles(role);
                       });
                   })
@@ -93,6 +96,8 @@ const Login = ({
                     console.err(err);
                   });
               } else {
+                username = Object.values(response.data)[0].usrname;
+                localStorage.setItem('username', username);
                 const role = Object.values(response.data)[0].usrRole;
                 // onSetRoles(role);
                 // onCheckAuthStart(
@@ -101,13 +106,8 @@ const Login = ({
                 //   user.photoURL,
                 //   role
                 // );
-                onCheckAuthStart(
-                  user.uid,
-                  user.displayName,
-                  user.photoURL,
-                  role
-                );
-                console.log('this is it',user);
+                onCheckAuthStart(user.uid, username, user.photoURL, role);
+                
               }
             })
             .catch((error) => {
@@ -229,7 +229,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLogOut: () => dispatch(action.authLogout()),
     onSetRoles: (role) => dispatch(action.setRoles(role)),
-    onCheckAuthStart: (id,name,url,role) => dispatch(action.checkAuthStart(id,name,url,role))
+    onCheckAuthStart: (id, name, url, role) =>
+      dispatch(action.checkAuthStart(id, name, url, role)),
   };
 };
 const mapStateToProps = (state) => {
@@ -237,7 +238,7 @@ const mapStateToProps = (state) => {
     usrname: state.username,
     usrID: state.userID,
     usrRole: state.userRole,
-    isLoading: state.isLoading
+    isLoading: state.isLoading,
   };
 };
 export default React.memo(connect(mapStateToProps, mapDispatchToProps)(Login));

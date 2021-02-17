@@ -13,8 +13,8 @@ const MenuContainer = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink activeClassName={classes.Active} to="/profile">
-            Profile{' '}
+          <NavLink activeClassName={classes.Active} to="/account">
+            Account{' '}
           </NavLink>
         </li>
         <li>

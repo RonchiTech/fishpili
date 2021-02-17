@@ -6,3 +6,5 @@ export {
   setRoles,
   checkAuthStart,
 } from './authActions';
+
+export { updateNameStart } from './updateNameActions';

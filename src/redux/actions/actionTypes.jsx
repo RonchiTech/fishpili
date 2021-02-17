@@ -5,3 +5,7 @@ export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 export const CHECK_AUTH = 'CHECK_AUTH';
 export const SET_ROLES = 'SET_ROLES';
 export const IS_LOADING = 'IS_LOADING';
+
+
+export const UPDATE_NAME_START = 'UPDATE_NAME_START';
+export const UPDATE_NAME_SUCCESS = 'UPDATE_NAME_SUCCESS';
