@@ -27,14 +27,14 @@ const Account = ({ username, onUpdateName }) => {
       border: '2px solid green',
     };
   }
-  let btn = <button onClick={EditBtnHandler}>Edit</button>;
+  let btn = <button onClick={EditBtnHandler}>Edit Name</button>;
   if (!DisableButtonState) {
     btn = (
       <>
         <button className={classes.CancelBtn} onClick={CancelBtnHandler}>
           Cancel
         </button>
-        <button onClick={UpdateBtnHandler}>Update</button>
+        <button onClick={UpdateBtnHandler}>Update Name</button>
       </>
     );
   }
