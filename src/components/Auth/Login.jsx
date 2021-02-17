@@ -96,7 +96,7 @@ const Login = ({
                     console.err(err);
                   });
               } else {
-                username = Object.values(response.data)[0].usrname;
+                username = Object.values(response.data)[0].username;
                 localStorage.setItem('username', username);
                 const role = Object.values(response.data)[0].usrRole;
                 // onSetRoles(role);
