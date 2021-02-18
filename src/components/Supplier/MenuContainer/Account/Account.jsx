@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import classes from './Account.module.css';
 import { connect } from 'react-redux';
-import * as action from '../../../../redux/actions'
+import * as action from '../../../../redux/actions';
 const Account = ({ username, onUpdateName }) => {
   const [DisableButtonState, setDisableButtonState] = useState(true);
   const [updatedName, setUpdatedName] = useState(username);
+  const [resultMessage, setResultMessage] = useState(null);
+
+  let resultMsg = <div>{resultMessage}</div>;
   const EditBtnHandler = (e) => {
     e.preventDefault();
     setDisableButtonState(false);
@@ -15,8 +18,16 @@ const Account = ({ username, onUpdateName }) => {
   };
   const UpdateBtnHandler = (e) => {
     e.preventDefault();
-    onUpdateName(updatedName);
-    setDisableButtonState(true);
+    if (updatedName.trim() === '') {
+      setResultMessage('Name cannot be blank...');
+    } else {
+      onUpdateName(updatedName.trim());
+      setDisableButtonState(true);
+      setResultMessage('Changing name success');
+      setTimeout(() => {
+        setResultMessage(null);
+      }, 1300);
+    }
   };
   let style = {
     color: 'black',
@@ -38,18 +49,24 @@ const Account = ({ username, onUpdateName }) => {
       </>
     );
   }
+  const updateNameHandler = (e) => {
+    setUpdatedName(e.target.value);
+    // setUpdatedName(updatedName.trim().split(/ +/).join(' '))
+  };
   return (
     <div className={classes.Account}>
       <h2>Account settings</h2>
+
       <form>
         <label>
           Account Name:
+          <div style={{ color: 'red' }}> {resultMsg}</div>
           <input
             style={style}
             type="text"
             value={updatedName}
             disabled={DisableButtonState}
-            onChange={(e) => setUpdatedName(e.target.value)}
+            onChange={(e) => updateNameHandler(e)}
           />
           {btn}
         </label>
@@ -63,9 +80,9 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => {
-    return {
-      onUpdateName: (updatedName) =>
-        dispatch(action.updateNameStart(updatedName)),
-    };
-}
+  return {
+    onUpdateName: (updatedName) =>
+      dispatch(action.updateNameStart(updatedName)),
+  };
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Account);
