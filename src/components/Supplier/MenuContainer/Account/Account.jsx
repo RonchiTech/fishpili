@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as action from '../../../../redux/actions';
 const Account = ({ username, onUpdateName }) => {
   const [DisableButtonState, setDisableButtonState] = useState(true);
-  const [updatedName, setUpdatedName] = useState(username);
+  const [updatedName, setUpdatedName] = useState(username.trim());
   const [resultMessage, setResultMessage] = useState(null);
 
   let resultMsg = <div>{resultMessage}</div>;
@@ -15,6 +15,7 @@ const Account = ({ username, onUpdateName }) => {
   const CancelBtnHandler = (e) => {
     e.preventDefault();
     setDisableButtonState(true);
+    setUpdatedName(updatedName.trim());
   };
   const UpdateBtnHandler = (e) => {
     e.preventDefault();
@@ -24,6 +25,7 @@ const Account = ({ username, onUpdateName }) => {
       onUpdateName(updatedName.trim());
       setDisableButtonState(true);
       setResultMessage('Changing name success');
+      setUpdatedName(updatedName.trim());
       setTimeout(() => {
         setResultMessage(null);
       }, 1300);
@@ -49,10 +51,7 @@ const Account = ({ username, onUpdateName }) => {
       </>
     );
   }
-  const updateNameHandler = (e) => {
-    setUpdatedName(e.target.value);
-    // setUpdatedName(updatedName.trim().split(/ +/).join(' '))
-  };
+
   return (
     <div className={classes.Account}>
       <h2>Account settings</h2>
@@ -66,7 +65,7 @@ const Account = ({ username, onUpdateName }) => {
             type="text"
             value={updatedName}
             disabled={DisableButtonState}
-            onChange={(e) => updateNameHandler(e)}
+            onChange={(e) => setUpdatedName(e.target.value)}
           />
           {btn}
         </label>
